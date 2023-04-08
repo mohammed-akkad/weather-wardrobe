@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Weather Wardrobe</string>
+    <string name="temperature">%1$d \u00C2\u00B0c</string>
+    <string name="country">Palestine</string>
+    <string name="wind">Wind: %1$d kmph</string>
+    <string name="precip">Precip: %1$d mm</string>
+    <string name="pressure">Pressure: %1$d mb</string>
+    <string name="weather_descriptions">Sunny</string>
+
 </resources>
