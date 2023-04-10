@@ -26,6 +26,7 @@
 
     <style name="TextView.Medium">
         <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:radius">8dp</item>
     </style>
 
     <style name="TextView.SemiLarge">

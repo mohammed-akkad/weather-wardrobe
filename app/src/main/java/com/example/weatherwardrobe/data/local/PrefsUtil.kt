@@ -1,0 +1,40 @@
+package com.example.weatherwardrobe.data.local
+
+import android.content.Context
+import android.content.SharedPreferences
+import java.text.SimpleDateFormat
+import java.util.*
+
+object PrefsUtil {
+    private var sharedPreferences: SharedPreferences? = null
+    private const val IMAGE_ID_KEY = "IMAGE_ID_KEY"
+    private const val SAVE_IMAGE_FROM_WARDROBE = "IMAGE"
+    private const val LAST_LOCAL_DATE_KEY = "LAST_LOCAL_DATE_KEY"
+
+    fun initPrefUtil(context: Context) {
+        sharedPreferences = context.getSharedPreferences(
+            SAVE_IMAGE_FROM_WARDROBE,
+            Context.MODE_PRIVATE
+        )
+    }
+
+    var imageIdWardrobe: Int?
+        get() = sharedPreferences?.getInt(IMAGE_ID_KEY, 0)
+        set(value) {
+            value?.let { sharedPreferences?.edit()?.putInt(IMAGE_ID_KEY, it) }?.apply()
+        }
+
+    var lastLocalDate: String?
+        get() = sharedPreferences?.getString(LAST_LOCAL_DATE_KEY, null)
+        set(value) {
+            value?.let { sharedPreferences?.edit()?.putString(LAST_LOCAL_DATE_KEY, it) }?.apply()
+        }
+
+    fun getCurrentLocalDate(): String {
+        val dateFormat = SimpleDateFormat("MM-dd", Locale.getDefault())
+        val currentDate = Date()
+        return dateFormat.format(currentDate)
+    }
+
+
+}

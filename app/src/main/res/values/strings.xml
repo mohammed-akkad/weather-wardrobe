@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">Weather Wardrobe</string>
-    <string name="temperature">%1$d \u00C2\u00B0c</string>
+    <string name="temperature">%1$d &#176;c</string>
     <string name="country">Palestine</string>
     <string name="wind">Wind: %1$d kmph</string>
-    <string name="precip">Precip: %1$d mm</string>
+    <string name="visibility">Visibility: %1$d</string>
     <string name="pressure">Pressure: %1$d mb</string>
     <string name="weather_descriptions">Sunny</string>
+    <string name="text">Please enter the name of the country to receive weather information</string>
+    <string name="location_not_exist">This Location does not exist</string>
 
 </resources>
