@@ -1,4 +1,4 @@
-package com.example.weatherwardrobe.ui.screen.search.adapter
+package com.example.weatherwardrobe.ui.screen.home.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
