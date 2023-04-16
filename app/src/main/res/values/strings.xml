@@ -1,10 +1,30 @@
 <resources>
     <string name="app_name">Weather Wardrobe</string>
-    <string name="temperature">%1$d \u00C2\u00B0c</string>
-    <string name="country">Palestine</string>
+    <string name="temperature">%1$d °c</string>
+    <string name="country">Country</string>
     <string name="wind">Wind: %1$d kmph</string>
-    <string name="precip">Precip: %1$d mm</string>
+    <string name="visibility">Visibility: %1$d</string>
     <string name="pressure">Pressure: %1$d mb</string>
     <string name="weather_descriptions">Sunny</string>
-
+    <string name="text">Please enter the name of the country to receive weather information</string>
+    <string name="location_not_exist">This Location does not exist</string>
+    <string name="try_again">Try Again</string>
+    <string name="summerTipsOne">Today is a beautiful day with lots of sunshine! It\'s the perfect weather for a picnic or a stroll in the park. Don\'t forget to wear sunscreen and stay hydrated.</string>
+    <string name="summerTipsTwo">Wear lightweight and loose-fitting clothing to stay cool.</string>
+    <string name="summerTipsThree">Take frequent breaks in the shade or indoors to avoid heat exhaustion.</string>
+    <string name="summerTipsFour">Apply sunscreen with a high SPF to protect your skin from harmful UV rays.</string>
+    <string name="summerTipsFive">Stay indoors during the hottest part of the day to avoid sunburn and heatstroke.</string>
+    <string name="summerTipsSix">Keep your home cool by closing curtains and blinds during the day.</string>
+    <string name="summerTipsSeven">Avoid strenuous outdoor activities during peak heat hours.</string>
+    <string name="recommended_clothing">Recommended clothing</string>
+    <string name="winterTipsOne">Stay warm and cozy this winter season with layered clothing.</string>
+    <string name="winterTipsTwo">Keep your hands and feet warm with proper gloves and socks.</string>
+    <string name="winterTipsThree">Stay hydrated by drinking plenty of water and fluids.</string>
+    <string name="winterTipsFour">Get enough sleep to stay energized during the winter months.</string>
+    <string name="winterTipsFive">Take care of your skin by using a moisturizer and lip balm.</string>
+    <string name="winterTipsSix">Be prepared for emergencies with a supply of essentials.</string>
+    <string name="winterTipsSeven">Stay active to boost your mood and energy levels.</string>
+    <string name="please_enter_country_name">Please enter a country name</string>
+    <string name="country_name_invalid">Country name cannot contain digits</string>
+    <string name="delete_card_weather">delete card weather</string>
 </resources>

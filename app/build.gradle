@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     namespace 'com.example.weatherwardrobe'
@@ -15,6 +17,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", properties.getProperty('API_KEY'))
+
     }
 
     buildTypes {
@@ -30,16 +34,32 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    //OKHTTP3
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    //GSON
+    implementation 'com.google.code.gson:gson:2.10.1'
+    //GLIDE
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    //LOTTIE
+    implementation "com.airbnb.android:lottie:4.2.0"
+    //INTERCEPTOR
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    //SPLASH
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+    //LOCATION
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
 }
