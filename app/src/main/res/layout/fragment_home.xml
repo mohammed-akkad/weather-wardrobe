@@ -9,17 +9,25 @@
         android:id="@+id/animation_view_no_connection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/no_internet" />
+
     <TextView
+        android:id="@+id/text_view_try_again"
+        style="@style/TextView.Medium"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/try_again"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/animation_view_no_connection"
+        app:layout_constraintStart_toStartOf="@id/animation_view_no_connection"
+        app:layout_constraintTop_toBottomOf="@id/animation_view_no_connection" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_item_weather"
@@ -27,10 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_medium"
         android:layout_marginVertical="@dimen/spacing_small"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardBackgroundColor="@color/background"
-        app:cardCornerRadius="8dp"
-        app:cardMaxElevation="2dp"
+        app:cardCornerRadius="@dimen/radius_default"
+        app:cardMaxElevation="@dimen/elevation_extra_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -51,12 +59,26 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/country" />
 
+            <ImageButton
+                android:id="@+id/image_button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:background="@null"
+                android:contentDescription="@string/delete_card_weather"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintBottom_toBottomOf="@id/text_view_country"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@id/text_view_country"
+                app:layout_constraintTop_toTopOf="@id/text_view_country" />
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/shape_image_view_weather"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginStart="@dimen/spacing_extra_large"
+                android:layout_marginBottom="@dimen/spacing_extra_large"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +91,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/spacing_small"
-                android:layout_marginStart="8dp"
                 android:gravity="center_horizontal"
                 android:paddingHorizontal="@dimen/spacing_small"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -86,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_extra_large"
                 app:layout_constraintBottom_toBottomOf="@+id/shape_image_view_weather"
-                app:layout_constraintStart_toEndOf="@+id/shape_image_view_weather"
+                app:layout_constraintEnd_toEndOf="@+id/text_view_country"
+                app:layout_constraintStart_toStartOf="@+id/text_view_country"
                 app:layout_constraintTop_toTopOf="@+id/shape_image_view_weather"
                 tools:text="@string/temperature" />
 
@@ -134,10 +156,10 @@
         style="@style/TextView.SemiLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="Recommended clothing"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_medium"
+        android:text="@string/recommended_clothing"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/card_view_item_weather"
@@ -149,35 +171,36 @@
         style="@style/TextView.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:layout_marginTop="@dimen/spacing_small"
         android:background="@drawable/shape_radius"
+        android:lineSpacingExtra="@dimen/spacing_extra_small"
         android:padding="@dimen/spacing_medium"
-        android:text="Today is a beautiful day with lots of sunshine! It's the perfect weather for a picnic or a stroll in the park. Don't forget to wear sunscreen and stay hydrated."
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_recommended_clothing" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_recommended_clothing"
+        tools:text="@string/summerTipsOne" />
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_view_wardrobe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_large"
         android:visibility="gone"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_tips"
-        tools:srcCompat="@drawable/shirt_three" />
+        tools:src="@drawable/shirt_three" />
 
     <ProgressBar
         android:id="@+id/progress_bar_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/primary"
-        android:visibility="visible"
+        android:indeterminateTint="@color/on_primary_container"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

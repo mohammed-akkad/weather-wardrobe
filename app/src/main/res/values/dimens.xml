@@ -17,6 +17,7 @@
     <dimen name="radius_default">8dp</dimen>
     
     <!--elevation dimens-->
+    <dimen name="elevation_extra_small">2dp</dimen>
     <dimen name="elevation_tiny">4dp</dimen>
     <dimen name="elevation_small">8dp</dimen>
     <dimen name="elevation_medium">10dp</dimen>

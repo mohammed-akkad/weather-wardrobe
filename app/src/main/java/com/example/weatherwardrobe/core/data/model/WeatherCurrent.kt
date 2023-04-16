@@ -1,8 +1,8 @@
-package com.example.weatherwardrobe.data.model
+package com.example.weatherwardrobe.core.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Current(
+data class WeatherCurrent(
     @SerializedName("observation_time") val observationTime: String,
     val temperature: Int,
     @SerializedName("weather_icons") val weatherIcons: List<String>,

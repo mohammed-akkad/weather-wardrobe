@@ -1,6 +1,6 @@
-package com.example.weatherwardrobe.data.model
+package com.example.weatherwardrobe.core.data.model
 
-data class RequestWeather(
+data class WeatherParams(
     val type: String,
     val query: String,
     val language: String,

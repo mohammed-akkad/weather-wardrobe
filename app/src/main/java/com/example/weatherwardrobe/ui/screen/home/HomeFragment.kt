@@ -6,137 +6,140 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.weatherwardrobe.BuildConfig
+import android.widget.Toast
 import com.example.weatherwardrobe.R
-import com.example.weatherwardrobe.data.interactor.GetListOfWardrobeItemInteractor
-import com.example.weatherwardrobe.data.model.WeatherResponse
-import com.example.weatherwardrobe.ui.MainActivity
+import com.example.weatherwardrobe.core.data.local.GetListOfTips
+import com.example.weatherwardrobe.core.data.local.GetListOfWardrobeItem
+import com.example.weatherwardrobe.core.data.model.WeatherResponse
 import com.example.weatherwardrobe.ui.base.BaseFragment
-import com.example.weatherwardrobe.util.MyInterCaptor
-import com.example.weatherwardrobe.data.local.PrefsUtil
+import com.example.weatherwardrobe.core.data.local.PrefsUtil
 import com.example.weatherwardrobe.databinding.FragmentHomeBinding
-import com.example.weatherwardrobe.util.glide
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
-import okhttp3.*
-import java.io.IOException
-import java.util.*
+import com.example.weatherwardrobe.ui.screen.home.presenter.HomePresenter
+import com.example.weatherwardrobe.ui.screen.welcome.WelcomeFragment
+import com.example.weatherwardrobe.core.util.glide
+import com.example.weatherwardrobe.core.util.hide
+import com.example.weatherwardrobe.core.util.show
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.example.weatherwardrobe.core.util.changeFragment
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
+    private val homePresenter = HomePresenter()
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
     override val inflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding =
         FragmentHomeBinding::inflate
-    private val client = OkHttpClient().newBuilder().addInterceptor(MyInterCaptor()).build()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
+        homePresenter.homeView = this
         addCallBacks()
     }
 
     private fun addCallBacks() {
-        validation("palestine")
+        loadCountryWeatherData()
+        deleteCardWeather()
     }
 
-    private fun validation(country: String) {
+    private fun deleteCardWeather() {
+        binding.imageButtonDelete.setOnClickListener {
+            changeFragment(WelcomeFragment())
+        }
+    }
+
+    private fun loadCountryWeatherData() {
+        val nameCountry = PrefsUtil.countryName
+        if (nameCountry == null) {
+            changeFragment(WelcomeFragment())
+        } else {
+            makeWeatherRequest(nameCountry)
+            loadWardrobeImage()
+        }
+    }
+
+    private fun makeWeatherRequest(country: String) {
         when {
-            country.isEmpty() -> {
-                toggleWeatherDetailsUIElements(View.GONE)
-            }
+            country.isEmpty() -> toggleWeatherDetailsUIElements(View.GONE)
             country.isNotEmpty() -> {
-                makeRequestWithOKHTTP(country)
-                toggleWeatherDetailsUIElements(View.VISIBLE)
+                homePresenter.makeRequest(country)
+                binding.progressBarLoading.show()
             }
         }
     }
 
-    private fun makeRequestWithOKHTTP(country: String){
-        val url = HttpUrl.Builder()
-            .scheme("http")
-            .host("api.weatherstack.com")
-            .addPathSegments("current")
-            .addQueryParameter("access_key", BuildConfig.API_KEY)
-            .addQueryParameter("query", "$country ")
-            .build()
-        val request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                (activity as MainActivity).runOnUiThread {
-                    toggleWeatherDetailsUIElements(View.GONE)
-                    binding.animationViewNoConnection.visibility = View.VISIBLE
-                    binding.progressBarLoading.visibility = View.GONE
-                    Log.d("MAIN_ACTIVITY", "${e.message}")
-                }
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.body?.string()?.let { jsonString ->
-                    try {
-                        val result = Gson().fromJson(jsonString, WeatherResponse::class.java)
-                        (activity as MainActivity).runOnUiThread {
-                            binding.animationViewNoConnection.visibility = View.GONE
-                            binding.progressBarLoading.visibility = View.GONE
-                            getDataFromJson(result)
-                        }
-                    } catch (e: JsonSyntaxException) {
-//                        binding.itemCardWeather.isVisible = false
-                        Log.d("MAIN_ACTIVITY", e.message.toString())
-                    }
-                }
-            }
-        })
-    }
-    private fun getDataFromJson(result: WeatherResponse) {
+    private fun getDataFromJson(response: WeatherResponse) {
         try {
-            getTextStringFromJson(result)
-            getImageWeatherFromJson(result)
-            setImageFromWardrobe(result)
+            setWeatherDetails(response)
         } catch (e: NullPointerException) {
             toggleWeatherDetailsUIElements(View.GONE)
-            Log.d("MAIN_ACTIVITY", e.message.toString())
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun getTextStringFromJson(result: WeatherResponse) {
+    private fun setWeatherDetails(response: WeatherResponse) {
         binding.apply {
-            result.apply {
+            response.apply {
                 textViewCountry.text = "${location.name} - ${location.country}"
-                textViewTemperature.text = getString(R.string.temperature, current.temperature)
-                textViewWeatherDescriptions.text = current.weatherDescriptions.joinToString()
-                textViewWind.text = getString(R.string.wind, current.windSpeed)
-                textViewVisibility.text = getString(R.string.visibility, current.visibility)
-                textViewPressure.text = getString(R.string.pressure, current.pressure)
+                textViewTemperature.text = getString(R.string.temperature, weatherCurrent.temperature)
+                textViewWeatherDescriptions.text = weatherCurrent.weatherDescriptions.joinToString()
+                textViewWind.text = getString(R.string.wind, weatherCurrent.windSpeed)
+                textViewVisibility.text = getString(R.string.visibility, weatherCurrent.visibility)
+                textViewPressure.text = getString(R.string.pressure, weatherCurrent.pressure)
+                glide(root.context, weatherCurrent.weatherIcons.joinToString(), shapeImageViewWeather)
+                setTipsText(weatherCurrent.temperature)
+                setImageFromWardrobe(response)
             }
         }
     }
 
-    private fun getImageWeatherFromJson(result: WeatherResponse) {
-        binding.apply {
-            result.apply {
-                glide(root.context, current.weatherIcons.joinToString(), shapeImageViewWeather)
-            }
-        }
+    private fun setTipsText(temperature: Int) {
+        val tips = GetListOfTips().execute(temperature, requireContext())
+        binding.textViewTips.text = tips?.randomOrNull()
     }
-    private fun loadImage() {
-        val imageId = PrefsUtil.imageIdWardrobe
-        if(imageId != null && imageId != 0){
+
+    private fun loadWardrobeImage() {
+        val imageId = getImageFromLocal()
+        if (imageId != null) {
             binding.imageViewWardrobe.setImageResource(imageId)
         }
     }
 
-    private fun setImageFromWardrobe(result: WeatherResponse) {
-        val currentLocalDate = result.location.localtime.substring(5..9)
-        val storedLocalDate = PrefsUtil.lastLocalDate
-        val getListOfWardrobeItemInteractor = GetListOfWardrobeItemInteractor()
-        val mapOfImage = getListOfWardrobeItemInteractor.execute(result.current.temperature)
-        val imageItem = mapOfImage?.values?.randomOrNull()
-        if (currentLocalDate != storedLocalDate) {
-            imageItem?.let {
-                binding.imageViewWardrobe.setImageResource(it)
-                PrefsUtil.imageIdWardrobe = it
-                PrefsUtil.lastLocalDate = PrefsUtil.getCurrentLocalDate()
-            }
-        }else{
-            loadImage()
+    private fun setImageFromWardrobe(response: WeatherResponse) {
+        val networkCurrentDate = PrefsUtil.getNetworkDate()
+        storeWeatherLocalDate(response)
+        val localDate = getLocalDate()
+        val imageItem = getRandomWardrobeItemImage(response)
+        val shouldUpdateImage = localDate != networkCurrentDate || getImageFromLocal() == 0
+        if (shouldUpdateImage) {
+            updateWardrobeImage(imageItem, response)
+        } else {
+            loadWardrobeImage()
+        }
+    }
+
+    private fun storeWeatherLocalDate(response: WeatherResponse) {
+        val currentLocalDate = response.location.localtime.substring(5..9)
+        PrefsUtil.lastLocalDate = currentLocalDate
+    }
+
+    private fun getLocalDate() = PrefsUtil.lastLocalDate
+
+    private fun getImageFromLocal() = PrefsUtil.imageIdWardrobe
+
+    private fun getRandomWardrobeItemImage(response: WeatherResponse): Int {
+        val getListOfWardrobeItemInteractor = GetListOfWardrobeItem()
+        val mapOfImage = getListOfWardrobeItemInteractor.execute(response.weatherCurrent.temperature, requireContext())
+        return mapOfImage!!.values.random()
+    }
+
+    private fun updateWardrobeImage(imageItem: Int?, response: WeatherResponse) {
+        imageItem?.let { image ->
+            binding.imageViewWardrobe.setImageResource(imageItem)
+            PrefsUtil.imageIdWardrobe = image
+            storeWeatherLocalDate(response)
         }
     }
 
@@ -146,6 +149,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             imageViewWardrobe.visibility = showDetails
             textViewRecommendedClothing.visibility = showDetails
             textViewTips.visibility = showDetails
+        }
+    }
+
+    override fun onSuccess(response: WeatherResponse) {
+            activity?.runOnUiThread {
+                binding.animationViewNoConnection.hide()
+                binding.progressBarLoading.hide()
+                getDataFromJson(response)
+                toggleWeatherDetailsUIElements(View.VISIBLE)
+            }
+    }
+
+    override fun onFailure(message: String?) {
+        activity?.runOnUiThread {
+            toggleWeatherDetailsUIElements(View.GONE)
+            binding.animationViewNoConnection.show()
+            binding.textViewTryAgain.apply {
+                this.show()
+                setOnClickListener { textViewTryAgain ->
+                    binding.progressBarLoading.show()
+                    PrefsUtil.countryName?.let { homePresenter.makeRequest(it) }
+                    textViewTryAgain.hide()
+                    binding.animationViewNoConnection.hide()
+                }
+            }
+            binding.progressBarLoading.hide()
         }
     }
 }
