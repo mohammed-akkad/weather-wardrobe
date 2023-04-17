@@ -27,4 +27,5 @@
     <string name="please_enter_country_name">Please enter a country name</string>
     <string name="country_name_invalid">Country name cannot contain digits</string>
     <string name="delete_card_weather">delete card weather</string>
+    <string name="please_write_the_country_correctly">Please write the country correctly</string>
 </resources>

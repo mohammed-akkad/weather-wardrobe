@@ -5,7 +5,7 @@
         <item name="colorPrimaryVariant">@color/primary</item>
         <item name="colorOnPrimary">@color/on_primary</item>
         <item name="android:windowSplashscreenContent" tools:targetApi="s">@drawable/splash_logo</item>
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/on_background</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
 
 

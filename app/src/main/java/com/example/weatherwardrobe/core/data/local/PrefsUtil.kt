@@ -44,4 +44,8 @@ object PrefsUtil {
         dateFormat.timeZone = timeZone
         return dateFormat.format(calendar.time)
     }
+
+    fun deleteAllSharedPreferences(){
+        sharedPreferences?.edit()?.clear()?.apply()
+    }
 }

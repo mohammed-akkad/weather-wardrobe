@@ -1,4 +1,4 @@
-package com.example.weatherwardrobe.core.data.network.services.weather.base
+package com.example.weatherwardrobe.core.data.network.services.base
 
 import okhttp3.*
 import java.io.IOException
@@ -6,7 +6,7 @@ import java.io.IOException
 abstract class BaseService {
     abstract val client: OkHttpClient
 
-    fun call(
+    fun makeHttpRequest(
         request: Request,
         onFailure: (message: String?) -> Unit,
         onSuccess: (response: Response) -> Unit
