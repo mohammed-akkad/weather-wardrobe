@@ -37,14 +37,6 @@ object PrefsUtil {
             value?.let { sharedPreferences?.edit()?.putString(COUNTRY_NAME_KEY, it) }?.apply()
         }
 
-    fun getNetworkDate(): String {
-        val calendar = Calendar.getInstance()
-        val timeZone = TimeZone.getTimeZone("UTC")
-        val dateFormat = SimpleDateFormat("MM-dd", Locale.getDefault())
-        dateFormat.timeZone = timeZone
-        return dateFormat.format(calendar.time)
-    }
-
     fun deleteAllSharedPreferences(){
         sharedPreferences?.edit()?.clear()?.apply()
     }

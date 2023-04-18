@@ -92,6 +92,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
     override fun showError(message: String?) {
         activity?.runOnUiThread {
             toggleWeatherDetailsUIElements(View.GONE)
+            binding.buttonChangeCountry.hide()
             binding.animationViewNoConnection.show()
             setTextViewTryAgainClickListener()
             binding.progressBarLoading.hide()
@@ -106,6 +107,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeView {
                 PrefsUtil.countryName?.let { homePresenter.getWeather(it) }
                 textViewTryAgain.hide()
                 binding.animationViewNoConnection.hide()
+                binding.buttonChangeCountry.show()
             }
         }
     }

@@ -31,7 +31,7 @@ class HomePresenter {
     }
 
     fun setImageFromWardrobe(response: WeatherResponse, requireContext: Context) {
-        val networkCurrentDate = getNetworkDate()
+        val networkCurrentDate = response.location.localtime.substring(5..9)
         storeWeatherLocalDate(response)
         val localDate = getLocalDate()
         val imageItem = getRandomWardrobeItemImage(response, requireContext)
@@ -127,8 +127,6 @@ class HomePresenter {
             homeView.setImageResource(imageId)
         }
     }
-
-    private fun getNetworkDate() = PrefsUtil.getNetworkDate()
 
     private fun getImageFromLocal() = PrefsUtil.imageIdWardrobe
 
