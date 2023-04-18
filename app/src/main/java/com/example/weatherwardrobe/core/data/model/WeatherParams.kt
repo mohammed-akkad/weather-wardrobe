@@ -1,8 +1,10 @@
 package com.example.weatherwardrobe.core.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class WeatherParams(
-    val type: String,
-    val query: String,
-    val language: String,
-    val unit: String
+    @SerializedName("type") val type: String,
+    @SerializedName("query") val query: String,
+    @SerializedName("language") val language: String,
+    @SerializedName("unit") val unit: String
 )

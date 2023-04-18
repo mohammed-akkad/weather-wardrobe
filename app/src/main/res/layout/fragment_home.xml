@@ -59,20 +59,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/country" />
 
-            <ImageButton
-                android:id="@+id/image_button_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_small"
-                android:background="@null"
-                android:contentDescription="@string/delete_card_weather"
-                android:src="@drawable/ic_delete"
-                app:layout_constraintBottom_toBottomOf="@id/text_view_country"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@id/text_view_country"
-                app:layout_constraintTop_toTopOf="@id/text_view_country" />
-
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/shape_image_view_weather"
                 android:layout_width="64dp"
@@ -205,5 +191,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_change_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:background="@drawable/button_selector"
+        android:fontFamily="@font/ubuntu_regular"
+        android:text="@string/change"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
